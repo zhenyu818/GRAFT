@@ -1,0 +1,14 @@
+apiVersion: training.graft.dev/v1alpha1
+kind: TrainingRun
+metadata:
+  name: language-model
+  namespace: graft-system
+spec:
+  workload: ddp
+  image: graft-worker:0.1.0
+  replicas: 2
+  gpusPerWorker: 1
+  steps: 80
+  microBatch: 8
+  accumulation: 2
+  checkpointEvery: 10

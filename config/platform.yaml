@@ -1,0 +1,160 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: graft-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: graft-controller
+  namespace: graft-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: graft-controller
+  namespace: graft-system
+rules:
+  - apiGroups: [training.graft.dev]
+    resources: [trainingruns, trainingruns/status, trainingruns/finalizers]
+    verbs: [get, list, watch, update, patch]
+  - apiGroups: [batch.volcano.sh]
+    resources: [jobs]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ['']
+    resources: [pods, configmaps, services]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: ['']
+    resources: [events]
+    verbs: [create, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: graft-controller
+  namespace: graft-system
+subjects:
+  - kind: ServiceAccount
+    name: graft-controller
+    namespace: graft-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: graft-controller
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: graft-artifacts
+spec:
+  capacity: {storage: 20Gi}
+  accessModes: [ReadWriteOnce]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: graft-local
+  hostPath:
+    path: /var/lib/graft/artifacts
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: graft-artifacts
+  namespace: graft-system
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: graft-local
+  volumeName: graft-artifacts
+  resources:
+    requests: {storage: 20Gi}
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: graft-low}
+value: 100
+preemptionPolicy: Never
+globalDefault: false
+description: Background training queue priority.
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: graft-normal}
+value: 1000
+preemptionPolicy: Never
+globalDefault: false
+description: Standard training queue priority.
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: graft-high}
+value: 10000
+preemptionPolicy: Never
+globalDefault: false
+description: Priority among waiting training jobs.
+---
+apiVersion: scheduling.volcano.sh/v1beta1
+kind: Queue
+metadata: {name: graft}
+spec:
+  weight: 1
+  reclaimable: false
+  capability:
+    nvidia.com/gpu: '2'
+    cpu: '8'
+    memory: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graft-controller
+  namespace: graft-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: graft-controller}
+  template:
+    metadata:
+      labels: {app: graft-controller}
+    spec:
+      serviceAccountName: graft-controller
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+      containers:
+        - name: manager
+          image: graft-controller:0.1.0
+          imagePullPolicy: IfNotPresent
+          args: [--leader-elect=true, --namespace=graft-system, --concurrency=4]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          ports:
+            - {name: metrics, containerPort: 8080}
+            - {name: probes, containerPort: 8081}
+          readinessProbe:
+            httpGet: {path: /readyz, port: probes}
+          livenessProbe:
+            httpGet: {path: /healthz, port: probes}
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: '1', memory: 512Mi}
+          volumeMounts:
+            - {name: artifacts, mountPath: /artifacts}
+      volumes:
+        - name: artifacts
+          persistentVolumeClaim: {claimName: graft-artifacts}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graft-metrics
+  namespace: graft-system
+spec:
+  selector: {app: graft-controller}
+  ports:
+    - {name: metrics, port: 8080, targetPort: metrics}

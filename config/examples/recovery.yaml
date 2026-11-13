@@ -1,0 +1,17 @@
+apiVersion: training.graft.dev/v1alpha1
+kind: TrainingRun
+metadata:
+  name: recovery
+  namespace: graft-system
+spec:
+  workload: ddp
+  image: graft-worker:0.1.0
+  replicas: 2
+  gpusPerWorker: 1
+  steps: 80
+  checkpointEvery: 10
+  progressTimeoutSeconds: 10
+  fault:
+    kind: hang
+    step: 25
+    rank: 1

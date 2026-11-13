@@ -1,0 +1,15 @@
+.work/
+.venv/
+bin/
+*.tar
+*.pt
+*.tmp
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+coverage.out
+.DS_Store
+*.egg-info/
+build/lib/
+dist/

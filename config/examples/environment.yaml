@@ -1,0 +1,15 @@
+apiVersion: training.graft.dev/v1alpha1
+kind: TrainingRun
+metadata:
+  name: navigation-policy
+  namespace: graft-system
+spec:
+  workload: rl
+  image: graft-worker:0.1.0
+  replicas: 1
+  gpusPerWorker: 0
+  steps: 30
+  checkpointEvery: 10
+  environmentConcurrency: 8
+  environmentTimeoutSeconds: 0.05
+  injectEnvironmentTimeout: true

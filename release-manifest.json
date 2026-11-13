@@ -1,0 +1,210 @@
+{
+  "format_version": 1,
+  "publication": "GRAFT source and recorded experiments",
+  "entries": [
+    {
+      "path": ".dockerignore",
+      "bytes": 42,
+      "sha256": "e3474444ca5fe09446d982e733594cfac5083b204211d720534e874bd4d93414"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 135,
+      "sha256": "e46f02cc9c020c7b3ee2116b52891734fd85f654169d588073e09a90c213dc9c"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1075,
+      "sha256": "0965ccad0c2d669b3bbe87bec84920d04acf8a55d66079fd27140e6819cf1a4e"
+    },
+    {
+      "path": "Makefile",
+      "bytes": 904,
+      "sha256": "302b88bf91643da6b6382db25f26742c97632324619b47dc6e091718787ea152"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6561,
+      "sha256": "2381ee5dde2de064d302e5dfd631bb05a353d303ae395530a7847ded3b70bebf"
+    },
+    {
+      "path": "api/v1alpha1/types.go",
+      "bytes": 4981,
+      "sha256": "25ba78769ad556607551aeaaa3590be39318de6d9ae2c51f2f3892a1d2c57fb8"
+    },
+    {
+      "path": "build/controller.Dockerfile",
+      "bytes": 86,
+      "sha256": "700bf26f9a19884643f07b270211f530701bf9872e1fa1fc94f42f99e7cf75cc"
+    },
+    {
+      "path": "build/worker.Dockerfile",
+      "bytes": 235,
+      "sha256": "3b4909d29a82eb6549e0865bc6e3f621d62334dbc3427c51a6d7c5cbc2702ad1"
+    },
+    {
+      "path": "cmd/manager/main.go",
+      "bytes": 2017,
+      "sha256": "d706295de26d300ee939fb0ef9a324166edd5da8a2edf488fa281ba3d56bab6b"
+    },
+    {
+      "path": "config/crd.yaml",
+      "bytes": 4917,
+      "sha256": "eb3ff36b7ace759650d4ea39f20c37af6dc66e5704187d7e76d65fc74a2f084d"
+    },
+    {
+      "path": "config/examples/environment.yaml",
+      "bytes": 331,
+      "sha256": "0f9d44d8faf785adde1a8f127b60a897414a9afcf9e057767aa8c5aafb2008e9"
+    },
+    {
+      "path": "config/examples/language-model.yaml",
+      "bytes": 268,
+      "sha256": "13966f53ff80aba95dcbeef171bd861d2b2a2a65cd70b83b6742dda62110a4bc"
+    },
+    {
+      "path": "config/examples/recovery.yaml",
+      "bytes": 306,
+      "sha256": "70e16e7cb47446676f2d14918e447029ac65630143e673aa9e65d8b5aa928002"
+    },
+    {
+      "path": "config/platform.yaml",
+      "bytes": 4011,
+      "sha256": "dd68582dc7d622173f59168af11bac0c5f837a7b8739c784a652ed6bfdcb55d5"
+    },
+    {
+      "path": "docs/DESIGN.md",
+      "bytes": 4842,
+      "sha256": "f702eeae3dcb77fcb33e7685ca99af718d3b29a0bc5fc7088fecff7a601a1db8"
+    },
+    {
+      "path": "docs/EXPERIMENTS.md",
+      "bytes": 4445,
+      "sha256": "25385df094fcb60a636be06abed7f551e47b445a8509fb102172b5eefe490c25"
+    },
+    {
+      "path": "docs/REPRODUCIBILITY.md",
+      "bytes": 2132,
+      "sha256": "539bb45415b4ecc67214cb4d6fbfeeb3786dcc8420191698e94f143a3cdfd4d4"
+    },
+    {
+      "path": "go.mod",
+      "bytes": 2913,
+      "sha256": "c6fc3c2695b8418b17a7cb716b873947309e9b548a23fcde64f1e3476532f355"
+    },
+    {
+      "path": "go.sum",
+      "bytes": 17581,
+      "sha256": "59154c24648227f5c4cf189c5af032df7c3720b72650a5987a2cce72c3591c6d"
+    },
+    {
+      "path": "internal/controller/reconciler.go",
+      "bytes": 10338,
+      "sha256": "7b102d5c1e172a115a1929722e8bbf5403020146e3695f82b17cdc61cad70f79"
+    },
+    {
+      "path": "internal/controller/reconciler_test.go",
+      "bytes": 7555,
+      "sha256": "e2b943edffd2b888dfc8e55df8d7a871dba1ee39ca288ac723a9aa39d6f164e2"
+    },
+    {
+      "path": "internal/controller/workload.go",
+      "bytes": 5988,
+      "sha256": "fe4c06d45cf4e5bb7b222e6f1075cdea5564258d7f4089e8c4e28ffd46e6eb18"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 491,
+      "sha256": "b741ad0b5bce691c56b1a82e4131e73b8704f2d9d3fff51c3243bc096fc7d9f2"
+    },
+    {
+      "path": "python/graft_worker/__init__.py",
+      "bytes": 92,
+      "sha256": "abf5bc1367c3193930a03ca4aa03d105531fe8a778178492dff379decd6766e5"
+    },
+    {
+      "path": "python/graft_worker/artifacts.py",
+      "bytes": 2149,
+      "sha256": "9a04e1348c30b092d85449fee9a841a0c2fdf7336d5cea243cac5c10ea4fd3db"
+    },
+    {
+      "path": "python/graft_worker/checkpoint.py",
+      "bytes": 4351,
+      "sha256": "a836ba725c958be014f1a56c938d347d58975adb229c47f29081f927a5ebd6aa"
+    },
+    {
+      "path": "python/graft_worker/config.py",
+      "bytes": 1573,
+      "sha256": "e9cce5bf5a8dcee375b31c51a4758d1ff987e7e66e67bb8a8dc69d62e0a07804"
+    },
+    {
+      "path": "python/graft_worker/model.py",
+      "bytes": 1462,
+      "sha256": "0f612e34989d3ee6997c07ca86a92a117469571537fe3536d699d11871a03a4c"
+    },
+    {
+      "path": "python/graft_worker/rl.py",
+      "bytes": 6638,
+      "sha256": "7f820c0d1b67b9343af3fa7988a532b47f1de518fa7040c9ad17d27c63f489a5"
+    },
+    {
+      "path": "python/graft_worker/train.py",
+      "bytes": 6981,
+      "sha256": "5e455bc8734186120a007085c482742cfe8b6e35a1a38d6f163bbc86e824fad3"
+    },
+    {
+      "path": "results/dual-v100/REPORT.md",
+      "bytes": 3523,
+      "sha256": "565627957241008e566c860e074ccc95b36be77ae5fe686ab5a87fcda82e83d0"
+    },
+    {
+      "path": "results/dual-v100/results.json",
+      "bytes": 212590,
+      "sha256": "68cd3d45077436e5ffc9684703e8b5f409d198d82938f42a9c65bb536cfc7be6"
+    },
+    {
+      "path": "results/dual-v100/validation.json",
+      "bytes": 1339,
+      "sha256": "b0dca62fc15d7efbedb7d35d314abcc8f84d0bb172583e466dbb89ce4ebb2fa6"
+    },
+    {
+      "path": "scripts/bootstrap.sh",
+      "bytes": 2877,
+      "sha256": "73d5174b9aaa28ea30e5f81cdfeab5b2531eb9b869b19b06c32a482a825e38c3"
+    },
+    {
+      "path": "scripts/build-runtime-image.sh",
+      "bytes": 1255,
+      "sha256": "5e39754548061decaef48a6ac489caf2f1e6bae93720db8f974a6cd498d6ef9d"
+    },
+    {
+      "path": "scripts/experiments.py",
+      "bytes": 22359,
+      "sha256": "d66de5671a6ba9355390e0ab275811fe492c7ea0bc3411fa161976e7acd864ac"
+    },
+    {
+      "path": "scripts/report.py",
+      "bytes": 6584,
+      "sha256": "ee44473b7a04cc0225df1e0c1b588e89f58b25a5e7eb58c9976b78df94df422d"
+    },
+    {
+      "path": "scripts/verify_artifact.py",
+      "bytes": 3569,
+      "sha256": "c516f3ec2b42b47ed9f2d2b9622a7dea76ca457a1ddbca97a143028f49623338"
+    },
+    {
+      "path": "tests/test_checkpoint.py",
+      "bytes": 4028,
+      "sha256": "8364e6fb61f70ffadf4895f1489d124f70be0aed92a55cd725d22957fdd5d895"
+    },
+    {
+      "path": "tests/test_metrics.py",
+      "bytes": 1708,
+      "sha256": "b193344cabc22d9ec32c667bfa0d08bd84446904299c6875ad65367b46463443"
+    }
+  ],
+  "positive_controls": {
+    "content_formats": 6,
+    "filename": true
+  }
+}

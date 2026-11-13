@@ -1,0 +1,44 @@
+{
+  "date_utc": "2026-11-13T09:18:13.957196+00:00",
+  "source_sha256": "3464db08138ad5b7a68904c99c9092862fd31b7e6111c26e362e17ca1b69510e",
+  "go": {
+    "formatting": "passed",
+    "vet": "passed",
+    "race_detector": "passed",
+    "tests_passed": 7,
+    "tests": [
+      "TestRepeatedEventsCreateOneGang",
+      "TestRecoveryFencesThePreviousWorkerGroup",
+      "TestQueuedJobsUseAdmissionRatherThanProgressTimeout",
+      "TestCleanupRetainsDurableArtifacts",
+      "TestRetryBudgetStopsReplacement",
+      "TestExistingChildIsAdoptedAfterAnInterruptedStatusWrite",
+      "TestAdmissionHoldCanBeReleased"
+    ]
+  },
+  "python": {
+    "tests_passed": 8,
+    "package_install": "passed",
+    "import_location": "fresh install target",
+    "network": "disabled",
+    "torch": "2.5.0+cu124",
+    "numpy": "2.1.3"
+  },
+  "integration": {
+    "recovery_state_comparison": "passed",
+    "pod_replacement": "passed",
+    "leader_replacement": "passed",
+    "priority_scheduling": "passed",
+    "gang_admission": "passed",
+    "concurrent_submissions": 100,
+    "rl_policy_updates": 30,
+    "rl_unique_episodes": 240,
+    "training_configuration_repetitions": 9,
+    "controller_metrics": "passed"
+  },
+  "publication_scan": {
+    "language": "English",
+    "content_positive_control_formats": 6,
+    "filename_positive_control": "passed"
+  }
+}

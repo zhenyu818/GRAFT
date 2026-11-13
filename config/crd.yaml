@@ -1,0 +1,77 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: trainingruns.training.graft.dev
+spec:
+  group: training.graft.dev
+  scope: Namespaced
+  names:
+    kind: TrainingRun
+    plural: trainingruns
+    singular: trainingrun
+    shortNames: [trun]
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - {name: Workload, type: string, jsonPath: .spec.workload}
+        - {name: Phase, type: string, jsonPath: .status.phase}
+        - {name: Attempt, type: integer, jsonPath: .status.attempt}
+        - {name: Step, type: integer, jsonPath: .status.lastStep}
+        - {name: Age, type: date, jsonPath: .metadata.creationTimestamp}
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            apiVersion: {type: string}
+            kind: {type: string}
+            metadata: {type: object}
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+            spec:
+              type: object
+              required: [workload, image]
+              x-kubernetes-validations:
+                - rule: "self.workload != 'rl' || (self.replicas == 1 && self.gpusPerWorker == 0)"
+                  message: RL jobs use one CPU environment coordinator.
+                - rule: "self.fault.kind == '' || self.fault.rank < self.replicas"
+                  message: The injection rank must be a member of the worker group.
+                - rule: "self.fault.kind == '' || (self.fault.step > 0 && self.fault.step <= self.steps)"
+                  message: The injection step must be within the configured training run.
+                - rule: "self.fault.kind != 'checkpoint' || (self.checkpointEvery > 0 && self.fault.step % self.checkpointEvery == 0)"
+                  message: A checkpoint interruption must target a periodic checkpoint step.
+                - rule: "self.workload == oldSelf.workload && self.image == oldSelf.image && self.replicas == oldSelf.replicas && self.gpusPerWorker == oldSelf.gpusPerWorker && self.steps == oldSelf.steps && self.seed == oldSelf.seed && self.microBatch == oldSelf.microBatch && self.accumulation == oldSelf.accumulation && self.checkpointEvery == oldSelf.checkpointEvery && self.maxRetries == oldSelf.maxRetries"
+                  message: Create a new run to change its execution configuration.
+                - rule: "self.fault == oldSelf.fault && self.priorityClassName == oldSelf.priorityClassName && self.queue == oldSelf.queue && self.progressTimeoutSeconds == oldSelf.progressTimeoutSeconds && self.startupTimeoutSeconds == oldSelf.startupTimeoutSeconds && self.stepDelaySeconds == oldSelf.stepDelaySeconds && self.environmentConcurrency == oldSelf.environmentConcurrency && self.environmentTimeoutSeconds == oldSelf.environmentTimeoutSeconds && self.injectEnvironmentTimeout == oldSelf.injectEnvironmentTimeout"
+                  message: Execution, scheduling, and experiment settings are fixed for each run.
+              properties:
+                workload: {type: string, enum: [ddp, rl]}
+                image: {type: string, minLength: 1, maxLength: 256}
+                replicas: {type: integer, minimum: 1, maximum: 8, default: 2}
+                gpusPerWorker: {type: integer, minimum: 0, maximum: 1, default: 1}
+                priorityClassName: {type: string, maxLength: 63, default: graft-normal}
+                queue: {type: string, maxLength: 63, default: graft}
+                steps: {type: integer, minimum: 5, maximum: 100000, default: 80}
+                seed: {type: integer, minimum: 0, default: 2026}
+                microBatch: {type: integer, minimum: 1, maximum: 256, default: 8}
+                accumulation: {type: integer, minimum: 1, maximum: 64, default: 2}
+                checkpointEvery: {type: integer, minimum: 0, default: 10}
+                progressTimeoutSeconds: {type: integer, minimum: 3, default: 15}
+                startupTimeoutSeconds: {type: integer, minimum: 10, default: 120}
+                maxRetries: {type: integer, minimum: 0, maximum: 5, default: 2}
+                suspend: {type: boolean, default: false}
+                stepDelaySeconds: {type: number, minimum: 0, maximum: 5, default: 0}
+                environmentConcurrency: {type: integer, minimum: 1, maximum: 64, default: 8}
+                environmentTimeoutSeconds: {type: number, minimum: 0.01, maximum: 10, default: 0.1}
+                injectEnvironmentTimeout: {type: boolean, default: false}
+                fault:
+                  type: object
+                  default: {}
+                  properties:
+                    kind: {type: string, enum: ['', exit, hang, checkpoint], default: ''}
+                    step: {type: integer, minimum: 0, default: 0}
+                    rank: {type: integer, minimum: 0, maximum: 7, default: 1}
